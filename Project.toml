@@ -1,0 +1,12 @@
+name = "iota"
+uuid = "e1fbcdf2-b239-4713-971c-2d6afecb5d37"
+authors = ["Andrew Lin <andrew.lin@ieee.org>"]
+version = "0.1.0"
+
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+Oxygen = "df9a0d86-3283-4920-82dc-4555fc0d1d8b"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+SQLite = "0aa819cd-b072-5ff4-a722-6bc24af294d9"
