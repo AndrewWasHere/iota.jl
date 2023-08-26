@@ -14,6 +14,7 @@ using Test, Dates, JSON3, SQLite, iota
     iota.add_thing!(db, d)
 
     @test thing ∈ iota.get_things(db)
+    @test iota.get_latest_thing_entry(db, thing) == NamedTuple()
 
     # Add entry from thing.
     d = JSON3.read("""{ "temperature": 42.0 }""")
@@ -49,11 +50,13 @@ using Test, Dates, JSON3, SQLite, iota
     @test missing_temp ∉ entry_temps
 
     today = string(Dates.today())
-    entries = iota.get_thing_entries(db, thing, today, today)
+    tomorrow = string(Dates.today() + Dates.Day(1))
+    entries = iota.get_thing_entries(db, thing, today, tomorrow)
     entry_temps = [e.temperature for e in entries]
     @test length(entries) == 3
     for t in [[missing_temp]; [e.temperature for e in new_temps]]
         @test t ∈ entry_temps
     end
 
+    SQLite.close(db)
 end

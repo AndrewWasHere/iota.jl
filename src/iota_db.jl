@@ -43,7 +43,7 @@ function add_thing!(db::SQLite.DB, descriptor::JSON3.Object)
     new_thing = descriptor.id
     if new_thing in get_things(db)
         # error
-        return
+        return false
     end
 
     cmd = """INSERT INTO $things_table VALUES ("$new_thing")"""
@@ -56,6 +56,8 @@ function add_thing!(db::SQLite.DB, descriptor::JSON3.Object)
     cmd *= ")"
     println("SQL: $cmd")
     SQLite.execute(db, cmd)
+
+    return true
 end
 
 """
@@ -65,7 +67,8 @@ function get_latest_thing_entry(db::SQLite.DB, thing::AbstractString)
     cmd = "SELECT * FROM $thing WHERE ROWID IN (SELECT max(ROWID) FROM $thing)"
     println("SQL: $cmd")
     cursor = SQLite.DBInterface.execute(db, cmd)
-    [NamedTuple(c) for c in cursor][end]
+    result = [NamedTuple(c) for c in cursor]
+    return length(result) > 0 ? result[end] : NamedTuple()
 end
 
 """
@@ -102,7 +105,7 @@ end
 Add datapoint to thing.
 """
 function add_to_thing(db::SQLite.DB, thing::AbstractString, datapoint::JSON3.Object)
-    timestamp = Dates.datetime2unix(Dates.DateTime(Dates.today()))
+    timestamp = Dates.datetime2unix(Dates.now())
 
     columns = sort([k for k in keys(datapoint) if k != :id])
     cmd = "INSERT INTO $thing VALUES ($timestamp, "
