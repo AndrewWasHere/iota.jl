@@ -7,7 +7,7 @@ and simple data visualization with no consideration to security whatsoever.
 
 Abandonded because the target platform was a Raspberry Pi 3, and dependency
 hell made compiling and running there very difficult. See 
-[iota]()
+[iota](https://github.com/AndrewWasHere/iota)
 to see if I got any farther in Python.
 
 ```mermaid
